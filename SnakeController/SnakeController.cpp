@@ -63,6 +63,48 @@ Controller::Controller(IPort& p_displayPort, IPort& p_foodPort, IPort& p_scorePo
     }
 }
 
+int Controller::checkDirection(bool not_left_dir)
+/*
+Direction_UP    = 0b00,
+Direction_DOWN  = 0b10,
+Direction_LEFT  = 0b01,
+Direction_RIGHT = 0b11
+};
+*/
+
+{
+  int direct{0};
+  if (m_currentDirection & Direction::Direction_DOWN)
+  {
+    direct = 1;
+  }
+  else
+  {
+    direct = -1;
+  }
+  if (not_left_dir)
+  {
+    if (m_currentDirection & Direction::Direction_LEFT)
+    {
+      return direct;
+    }
+    else
+    {
+      return 0;
+    }
+  }
+  else if (m_currentDirection & Direction::Direction_LEFT)
+    {
+      return direct;
+    }
+    else
+    {
+      return 0;
+    }
+
+  //return ((m_currentDirection & Direction::Direction_LEFT) ? (m_currentDirection & Direction::Direction_DOWN) ? 1 : -1 : 0);
+}
+
 void Controller::receive(std::unique_ptr<Event> e)
 {
     try {
@@ -71,7 +113,9 @@ void Controller::receive(std::unique_ptr<Event> e)
         Segment const& currentHead = m_segments.front();
 
         Segment newHead;
-        newHead.x = currentHead.x + ((m_currentDirection & 0b01) ? (m_currentDirection & 0b10) ? 1 : -1 : 0);
+        int direct = Controller::checkDirection(0);
+        int not_left_direct = Controller::checkDirection(1);
+        newHead.x = currentHead.x + direct;
         newHead.y = currentHead.y + (not (m_currentDirection & 0b01) ? (m_currentDirection & 0b10) ? 1 : -1 : 0);
         newHead.ttl = currentHead.ttl;
 

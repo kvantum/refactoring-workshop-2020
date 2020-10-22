@@ -30,6 +30,7 @@ public:
     Controller& operator=(Controller const& p_rhs) = delete;
 
     void receive(std::unique_ptr<Event> e) override;
+    int checkDirection(bool not_left_dir);
 
 private:
     struct Segment
