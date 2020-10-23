@@ -53,7 +53,7 @@ Controller::Controller(IPort& p_displayPort, IPort& p_foodPort, IPort& p_scorePo
         istr >> length;
 
         while (length--) {
-            Segment seg;
+            SegmentController::Segment seg;
             istr >> seg.x >> seg.y;
             m_segments.push_back(seg);
         }
@@ -119,6 +119,7 @@ bool perpendicular(Direction dir1, Direction dir2)
 }
 } // namespace
 
+/*
 Controller::Segment Controller::calculateNewHead() const
 {
     Segment const& currentHead = m_segments.front();
@@ -164,7 +165,7 @@ void Controller::removeTailSegmentIfNotScored(Segment const& newHead)
         removeTailSegment();
     }
 }
-
+*/
 void Controller::updateSegmentsIfSuccessfullMove(Segment const& newHead)
 {
     if (isSegmentAtPosition(newHead.x, newHead.y) or isPositionOutsideMap(newHead.x, newHead.y)) {
